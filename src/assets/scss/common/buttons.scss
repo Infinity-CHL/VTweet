@@ -5,9 +5,11 @@
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 30px;
+  font-family: $mainFont;
 }
 
 .btnTweet {
+  margin-left: auto;
   display: flex;
   justify-content: center;
   color: #fff;

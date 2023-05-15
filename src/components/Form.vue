@@ -1,6 +1,7 @@
 <template>
   <form @submit.prevent="onSubmit">
       <textarea
+        class="textarea"
         v-model="body"
         required
         placeholder="Type tweet here"
@@ -16,28 +17,31 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
-  data() {
-    return {
-      body: ''
-    }
-  },
-  methods: {
-    generateId() {
-      const timestamp = Date.now().toString(36); // Convert timestamp to base 36 string
-      const randomChars = Math.random().toString(36).substr(2, 5); // Generate random chars
+  setup(_, { emit }) {
+    const body = ref('');
+    function generateId() {
+      const timestamp = Date.now().toString(36);
+      const randomChars = Math.random().toString(36).substr(2, 5);
       return `${timestamp}${randomChars}`;
-    },
-    onSubmit() {
+    };
+
+    const onSubmit = () => {
       const newTweet = {
-        id: this.generateId(),
+        id: generateId(),
         likes: 0,
         avatar: `https://api.dicebear.com/api/male/${Date.now()}.svg`,
-        body: this.body,
+        body: body.value,
         date: new Date(Date.now()).toLocaleString(),
       }
-      this.$emit('onSubmit', newTweet);
-      this.body = "";
+      emit('onSubmit', newTweet);
+      body.value = "";
+    }
+    return {
+      body,
+      onSubmit,
     }
   }
 }
